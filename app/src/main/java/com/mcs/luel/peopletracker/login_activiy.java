@@ -57,9 +57,7 @@ public class login_activiy extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "please make sure passwords are the same", Toast.LENGTH_LONG).show();
             }
 
-            else if(!validatePass(password)){
-
-            }
+            else if(!validatePass(password)); //Do nothing
             else{
                 startActivity(new Intent(login_activiy.this, account_entry.class));
             }
@@ -85,7 +83,7 @@ public class login_activiy extends AppCompatActivity {
                 }
 
                 else{
-                    rePassword.setBackground(defaultBackground);
+                    password.setBackground(defaultBackground);
                 }
             }
         });

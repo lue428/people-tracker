@@ -77,6 +77,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:fontFamily="@font/aguafina_script"
             android:text="@string/we_need_more_data"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -130,17 +131,8 @@
             app:layout_constraintStart_toStartOf="@+id/guideline4"
             app:layout_constraintTop_toBottomOf="@+id/username_et" />
 
-        <Button
-            android:id="@+id/choose_country_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:text="choose country"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            app:layout_constraintStart_toStartOf="@+id/guideline4" />
+
+
 
         <TextView
             android:id="@+id/gender_et"
@@ -213,6 +205,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="save"
+            android:background="#97D4FF"
             app:layout_constraintBottom_toTopOf="@+id/guideline8"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -233,5 +226,17 @@
             app:layout_constraintTop_toTopOf="@+id/guideline"
             app:layout_constraintVertical_bias="0.0"
             tools:srcCompat="@tools:sample/avatars[10]" />
+
+    <Spinner
+        android:id="@+id/choose_country_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="choose country"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="@+id/guideline4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
