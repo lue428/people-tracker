@@ -20,6 +20,9 @@ public class login_activiy extends AppCompatActivity {
     EditText password;
     EditText rePassword;
 
+    Drawable defaultBackground;
+    Drawable errorBackground;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,11 @@ public class login_activiy extends AppCompatActivity {
         emailEt = findViewById(R.id.email_et);
         password = findViewById(R.id.password_et);
         rePassword = findViewById(R.id.re_password_et);
+
+        defaultBackground = emailEt.getBackground();
+        errorBackground = getDrawable(R.drawable.border_shape);
+
+
 
         emailEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -62,10 +70,34 @@ public class login_activiy extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus && !properEmail()) {
-
-                        emailEt.setBackgroundColor(new Color().RED);
+                    emailEt.setBackground(errorBackground);
                 } else if (!hasFocus && properEmail()) {
-                    emailEt.setBackgroundColor(new Color().TRANSPARENT);
+                    emailEt.setBackground(defaultBackground);
+                }
+            }
+        });
+
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus && !validatePass(password)){
+                    password.setBackground(errorBackground);
+                }
+
+                else{
+                    rePassword.setBackground(defaultBackground);
+                }
+            }
+        });
+
+        rePassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus && !sameTextview(password, rePassword)){
+                    rePassword.setBackground(errorBackground);
+                }
+                else{
+                    rePassword.setBackground(defaultBackground);
                 }
             }
         });
