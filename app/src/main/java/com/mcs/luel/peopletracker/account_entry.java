@@ -3,16 +3,16 @@ package com.mcs.luel.peopletracker;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,11 +25,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.time.format.DateTimeFormatter;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Formatter;
 import java.util.Locale;
 
 public class account_entry extends AppCompatActivity  implements DatePickerDialog.OnDateSetListener {
@@ -50,6 +48,7 @@ public class account_entry extends AppCompatActivity  implements DatePickerDialo
     ArrayAdapter<String> adapter;
 
     Drawable errorBackground;
+    public Pojo pojo = new Pojo();
 
     public static final int CAMERA_REQUEST = 456;
 
@@ -70,7 +69,6 @@ public class account_entry extends AppCompatActivity  implements DatePickerDialo
         addImg = findViewById(R.id.add_picture_btn);
         pictureIV = findViewById(R.id.picture_iv);
         chooseCountry = findViewById(R.id.choose_country_btn);
-
         errorBackground = getDrawable(R.drawable.border_shape);
 
         final Calendar c = Calendar.getInstance();
@@ -79,25 +77,39 @@ public class account_entry extends AppCompatActivity  implements DatePickerDialo
         int startDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 account_entry.this, this, startYear, starthMonth, startDay);
-
         datePicker.setOnClickListener(v->{
 
             datePickerDialog.show();
 
         });
 
+
         saveAccData.setOnClickListener(v -> {
-            while (fullName.getText().toString().isEmpty() ||
+            if (fullName.getText().toString().isEmpty() ||
                     username.getText().toString().isEmpty() ||
                     zipcode.getText().toString().isEmpty()) {
 
                 Toast.makeText(account_entry.this, "please fill all required fields", Toast.LENGTH_LONG).show();
             }
+
+            else{
+
+                Intent intent = new Intent(account_entry.this, rv_people_list.class);
+
+
+                saveData();
+                intent.putExtra("pojo instance", pojo);
+                startActivity(intent);
+            }
         });
+
+
 
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item);
         getCountries();
         chooseCountry.setAdapter(adapter);
+
+
 
         chooseCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -117,6 +129,28 @@ public class account_entry extends AppCompatActivity  implements DatePickerDialo
         });
     }
 
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+        }
+    }
+
+    private void saveData(){
+        pojo = new Pojo();
+        pojo.setfName(fullName.getText().toString());
+        pojo.setUsername(username.getText().toString());
+        pojo.setZipcode(zipcode.getText().toString());
+
+        if(maleBtn.hasSelection()) pojo.setGender(1);
+        else pojo.setGender(0);
+        String country = adapter.getItem(chooseCountry.getSelectedItemPosition());
+        pojo.setCountry(country);
+
+
+    }
+
     private void getCountries(){
         String[] isoCountryCodes = Locale.getISOCountries();
         adapter.add(" ");
@@ -128,12 +162,6 @@ public class account_entry extends AppCompatActivity  implements DatePickerDialo
 
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, CAMERA_REQUEST);
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -146,6 +174,24 @@ public class account_entry extends AppCompatActivity  implements DatePickerDialo
             Bitmap bitmap = (Bitmap) cameraData.get("data");
             pictureIV.setImageBitmap(bitmap);
 
+        }
+    }
+
+    public boolean saveImageToInternalStorage(Bitmap image) {
+
+        try {
+            // Use the compress method on the Bitmap object to write image to
+            // the OutputStream
+            FileOutputStream fos =  openFileOutput("userImage.png", Context.MODE_PRIVATE);
+
+            // Writing the bitmap to the output stream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+            Log.e("saveToInternalStorage()", e.getMessage());
+            return false;
         }
     }
 

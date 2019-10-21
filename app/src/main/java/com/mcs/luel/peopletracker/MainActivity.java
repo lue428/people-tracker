@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         welcomeBtn = findViewById(R.id.welcome_btn);
         welcomeBtn.setOnClickListener(v ->{
-            startActivity(new Intent(MainActivity.this, login_activiy.class));
+            startActivity(new Intent(MainActivity.this, account_entry.class));
 
         });
     }

@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -14,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".account_entry"></activity>
+        <activity android:name=".list_item_rv"></activity>
+        <activity android:name=".rv_people_list" />
+        <activity android:name=".account_entry" />
         <activity android:name=".login_activiy" />
         <activity android:name=".welcome_screen" />
         <activity android:name=".MainActivity">
@@ -29,7 +33,5 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
-
 
 </manifest>
